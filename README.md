@@ -12,23 +12,26 @@ yarn dev
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Packages Used
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+1. For Fuzzy search, I have used Fuse.js
+2. For environment handling, I have used dot-env.
+3. For DB, I have used mongodb
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Private Keys
 
-## Learn More
+Private keys are kept in .env.local and pushed to github so that everyone can test.
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Structure and Design Patterns
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+I have used service object design patterns while conforming to NEXT JS best practices. It is an api only application that can be accessed as
 
-## Deploy on Vercel
+For example: 
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`http://localhost:3000/api/acronyms?from=50&limit=10&search=sole`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## See it in Action
+
+https://www.loom.com/share/c40debefcc634a2c8d07b9a72f932b54
+
