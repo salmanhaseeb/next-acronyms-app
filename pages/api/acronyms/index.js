@@ -1,19 +1,13 @@
-import clientPromise from 'lib/mongodb';
-const Fuse = require('fuse.js')
+import AcronymCreateService from 'services/acronymCreateService';
+import AcronymListService from 'services/acronymListService';
 
 export default async function handler(req, res) {
-
-  const client = await clientPromise;
-  const db = client.db("messaging");
 
   if(req.method === "POST") {
     
     try {
       const { acronym, meaning } = req.body
-      const acr = await db.collection("acronyms").insertOne({
-        acronym,
-        meaning,
-      });
+      const acr = await AcronymCreateService(acronym, meaning)
 
       res.status(201).json({
         message: "Record Successfully Created",
@@ -25,30 +19,16 @@ export default async function handler(req, res) {
     }
 
   } else {
-    const acronyms = await db.collection("acronyms").find({}).toArray();
+    try {
 
-    const { from, limit, search } = req.query;
-    const lim = parseInt(limit) + parseInt(from)
-    const sliced_acronyms = acronyms.slice(from, lim) // slicing for pagination
+      const { from, limit, search } = req.query;
+      
+      const acronyms = await AcronymListService(from, limit, search)
 
-    const keys = ['acronym', 'meaning']
-
-    const fuse = new Fuse(sliced_acronyms, {
-      keys: keys
-    })
-
-    const previous_count = acronyms.slice(0, from).length
-    const next_count = acronyms.slice(lim, acronyms.length).length
-
-    let result = fuse.search(search)
-
-    result.push({
-      pagination_info: {
-        previous_count: previous_count,
-        next_count: next_count,
-      }
-    })
-
-    res.status(200).json(result)
+      res.status(200).json(acronyms)
+    } catch (e) {
+      console.error(e);
+      throw new Error(e).message;
+    }
   }
 }
